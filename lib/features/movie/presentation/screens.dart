@@ -1,2 +1,2 @@
-export 'package:peliculas_app/features/movie/presentation/screen/home_screen.dart';
+export 'package:peliculas_app/features/movie/presentation/home/screen/home_screen.dart';
 
