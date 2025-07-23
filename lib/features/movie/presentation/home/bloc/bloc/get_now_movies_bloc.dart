@@ -12,9 +12,11 @@ part 'get_now_movies_state.dart';
 class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
 
   final GetNowPlayingUseCase getNowPlayingUseCase;
+  int currenPage = 1;
 
   GetNowMoviesBloc({required this.getNowPlayingUseCase}) : super(GetNowMoviesInitial()) {
     on<GetAllMovies>(_getNowMoviesEvent);
+    on<LoadNextPage>(_loadNextPage);
   }
 
   List<Movie>? get currentMovies {
@@ -47,6 +49,35 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
         (listMovies) {
           emit(GetNowMoviesSuccess(movies: listMovies));
           debugPrint(listMovies[0].id.toString());
+        },
+      );
+    }
+  }
+
+  FutureOr<void> _loadNextPage(
+    GetNowMoviesEvent event,
+    Emitter<GetNowMoviesState> emit,  
+  ) async {
+    
+    final currentState = state;
+    
+    if (currentState is GetNowMoviesInitial) return _getNowMoviesEvent(event, emit);
+
+    if (currentState is GetNowMoviesSuccess) {
+      emit(GetNowMoviesLoading());
+      currenPage++;
+      final resultUseCase = await getNowPlayingUseCase(page: currenPage);
+
+      return resultUseCase.fold(
+        (failure) => emit(
+          GetNowMoviesFailure(
+            message: 'Error al Pasar a la pagina $currenPage de las movies desde el bloc',
+          ),
+        ),
+        (listMovies) {
+          final combinatedMovies = List<Movie>.from(currentState.movies)..addAll(listMovies);
+          emit(GetNowMoviesSuccess(movies: combinatedMovies));
+          debugPrint(currenPage.toString());
         },
       );
     }

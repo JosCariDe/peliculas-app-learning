@@ -10,8 +10,8 @@ class GetNowPlayingUseCase {
 
   GetNowPlayingUseCase({required this.movieRepository});
 
-  Future<Either<Failure, List<Movie>>> call(){
-    return movieRepository.getNowPlaying();
+  Future<Either<Failure, List<Movie>>> call({int page = 1}){
+    return movieRepository.getNowPlaying(page: page);
   }
 
 

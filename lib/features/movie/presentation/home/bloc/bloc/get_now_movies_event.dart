@@ -4,3 +4,4 @@ part of 'get_now_movies_bloc.dart';
 sealed class GetNowMoviesEvent {}
 
 class GetAllMovies extends GetNowMoviesEvent{}
+class LoadNextPage extends GetNowMoviesEvent{}

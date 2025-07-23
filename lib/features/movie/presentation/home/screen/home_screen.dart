@@ -7,24 +7,22 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Widget _buildMovies(List<Movie> movies) => ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(movies[index].title),
-          subtitle: Text(movies[index].overview),
-        ),
-      );
+    itemCount: movies.length,
+    itemBuilder: (context, index) => ListTile(
+      title: Text(movies[index].title),
+      subtitle: Text(movies[index].overview),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Peliculas Descatacas'),
-      ),
+      appBar: AppBar(title: Text('Peliculas Descatacas')),
       body: Center(
-          child: BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
+        child: BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
           builder: (context, state) {
-            if (state is GetNowMoviesInitial || state is GetNowMoviesLoading){
-              return const Center(child: CircularProgressIndicator(),);
+            if (state is GetNowMoviesInitial || state is GetNowMoviesLoading) {
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (state is GetNowMoviesFailure) {
@@ -34,14 +32,19 @@ class HomeScreen extends StatelessWidget {
             if (state is GetNowMoviesSuccess) {
               final movies = state.movies;
               if (movies.isEmpty) {
-                return const Center(child: Text('Ningun Movie en el list que llega al UI'),);
+                return const Center(
+                  child: Text('Ningun Movie en el list que llega al UI'),
+                );
               }
 
-              return Padding(padding: EdgeInsetsGeometry.symmetric( horizontal: 12), child: _buildMovies(movies),);
+              return Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
+                child: _buildMovies(movies),
+              );
             }
             return const Center(child: Text('Something went wrong'));
           },
-        )
+        ),
       ),
     );
   }
