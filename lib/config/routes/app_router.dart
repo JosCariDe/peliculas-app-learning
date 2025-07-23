@@ -12,7 +12,7 @@ final appRouter = GoRouter(
       builder: (context, state) =>
           MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => sl<GetNowMoviesBloc>()),
+              BlocProvider(create: (_) => sl<GetNowMoviesBloc>()..add(GetAllMovies())),
             ], 
             child: const HomeScreen()
           ),

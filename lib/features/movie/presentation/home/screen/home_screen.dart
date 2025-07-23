@@ -3,19 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/bloc/get_now_movies_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<GetNowMoviesBloc>().add(GetAllMovies());
-  }
 
   Widget _buildMovies(List<Movie> movies) => ListView.builder(
         itemCount: movies.length,
@@ -28,6 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Peliculas Descatacas'),
+      ),
       body: Center(
           child: BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
           builder: (context, state) {
@@ -45,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: Text('Ningun Movie en el list que llega al UI'),);
               }
 
-              return _buildMovies(movies);
+              return Padding(padding: EdgeInsetsGeometry.symmetric( horizontal: 12), child: _buildMovies(movies),);
             }
             return const Center(child: Text('Something went wrong'));
           },
