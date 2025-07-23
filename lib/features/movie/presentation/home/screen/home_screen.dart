@@ -3,9 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/bloc/get_now_movies_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   Widget _buildMovies(List<Movie> movies) => ListView.builder(
     itemCount: movies.length,
     itemBuilder: (context, index) => ListTile(
@@ -17,7 +22,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Peliculas Descatacas')),
+      appBar: AppBar(title: Center(child: Text('Peliculas Descatacas'))),
       body: Center(
         child: BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
           builder: (context, state) {

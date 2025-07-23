@@ -63,7 +63,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
     if (currentState is GetNowMoviesInitial) return _getNowMoviesEvent(event, emit);
 
     if (currentState is GetNowMoviesSuccess) {
-      emit(GetNowMoviesLoading());
+      //emit(GetNowMoviesLoading());
       currenPage++;
       final resultUseCase = await getNowPlayingUseCase(page: currenPage);
 

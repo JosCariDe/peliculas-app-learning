@@ -1,13 +1,13 @@
 class MovieMovieDB {
     final bool adult;
-    final String backdropPath;
+    final String? backdropPath;
     final List<int> genreIds;
     final int id;
     final String originalLanguage;
     final String originalTitle;
     final String overview;
     final double popularity;
-    final String posterPath;
+    final String? posterPath;
     final DateTime releaseDate;
     final String title;
     final bool video;
@@ -33,7 +33,7 @@ class MovieMovieDB {
 
     factory MovieMovieDB.fromJson(Map<String, dynamic> json) => MovieMovieDB(
         adult: json["adult"] ?? 'false',
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"] ?? '',
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
         originalLanguage: json["original_language"],
