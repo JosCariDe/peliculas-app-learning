@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_now_playing_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
@@ -13,7 +14,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
   final GetNowPlayingUseCase getNowPlayingUseCase;
 
   GetNowMoviesBloc({required this.getNowPlayingUseCase}) : super(GetNowMoviesInitial()) {
-    on<GetNowMoviesEvent>(_getNowMoviesEvent);
+    on<GetAllMovies>(_getNowMoviesEvent);
   }
 
   List<Movie>? get currentMovies {
@@ -43,7 +44,10 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
             message: 'Error al usar el caso de uso de GetNowMovies',
           ),
         ),
-        (listMovies) => GetNowMoviesSuccess(movies: listMovies),
+        (listMovies) {
+          emit(GetNowMoviesSuccess(movies: listMovies));
+          debugPrint(listMovies[0].id.toString());
+        },
       );
     }
   }
