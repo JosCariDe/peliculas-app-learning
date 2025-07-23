@@ -34,7 +34,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
   @override
   Future<Either<Failure, List<Movie>>> getNowPlaying({int page = 1}) {
     return _handleRequest(() async {
-      return movieDataSource.getNowPlaying();
+      return movieDataSource.getNowPlaying(page: page);
     });
   }
 }

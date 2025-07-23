@@ -46,6 +46,9 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: IconButton(onPressed: () {
+        context.read<GetNowMoviesBloc>().add(LoadNextPage());
+      }, icon: const Icon(Icons.refresh_rounded)),
     );
   }
 }

@@ -21,7 +21,13 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
     try {
-      final response = await dio.get('/movie/now_playing');
+      debugPrint('Page DataSource: ${page.toString()}');
+      final response = await dio.get(
+        '/movie/now_playing',
+        queryParameters: {
+          'page': page,
+        },
+      );
       debugPrint(response.toString());
       debugPrint('\nEmpezando a Mapper\n');
       final movieDBResponse = MovieDbResponse.fromJson(response.data);

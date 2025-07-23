@@ -60,7 +60,6 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
   ) async {
     
     final currentState = state;
-    
     if (currentState is GetNowMoviesInitial) return _getNowMoviesEvent(event, emit);
 
     if (currentState is GetNowMoviesSuccess) {
@@ -75,6 +74,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
           ),
         ),
         (listMovies) {
+          debugPrint('Ultima pelicula, tiene el titulo: ${listMovies[listMovies.length - 1].title}');
           final combinatedMovies = List<Movie>.from(currentState.movies)..addAll(listMovies);
           emit(GetNowMoviesSuccess(movies: combinatedMovies));
           debugPrint(currenPage.toString());
