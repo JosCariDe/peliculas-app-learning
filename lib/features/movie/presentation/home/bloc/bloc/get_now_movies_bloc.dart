@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_now_playing_use_case.dart';
@@ -10,14 +12,23 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
 
   final GetNowPlayingUseCase getNowPlayingUseCase;
 
-  GetNowMoviesBloc(this.getNowPlayingUseCase) : super(GetNowMoviesInitial()) {
+  GetNowMoviesBloc({required this.getNowPlayingUseCase}) : super(GetNowMoviesInitial()) {
     on<GetNowMoviesEvent>(_getNowMoviesEvent);
   }
 
-  void _getNowMoviesEvent(
+  List<Movie>? get currentMovies {
+    final currentState = state;
+    if (currentState is GetNowMoviesSuccess) {
+      return currentState.movies;
+    }
+    return null;
+  }
+
+  FutureOr<void> _getNowMoviesEvent(
     GetNowMoviesEvent event,
-    Emitter<GetNowMoviesState> emit,
+    Emitter<GetNowMoviesState> emit,  
   ) async {
+    
     final currentState = state;
 
     if (currentState is GetNowMoviesSuccess) return;
