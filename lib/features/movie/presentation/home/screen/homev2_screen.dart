@@ -9,7 +9,7 @@ class Homev2Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: _HomeView());
+    return const Scaffold(body: _HomeView(), bottomNavigationBar: CustomBottonNavigationbar(),);
   }
 }
 
