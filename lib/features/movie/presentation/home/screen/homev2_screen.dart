@@ -40,7 +40,7 @@ class _HomeViewState extends State<_HomeView> {
       }
       
       if (state is GetNowMoviesSuccess){
-        return _ContainHome(movies: state.slideMoovie ?? []);
+        return _ContainHome(movies: state.movies, moviesSlide: state.slideMoovie ?? [],);
       }
 
       return const Center(child: Text('Something went wrong'));
@@ -51,9 +51,10 @@ class _HomeViewState extends State<_HomeView> {
 
 class _ContainHome extends StatelessWidget {
   const _ContainHome({
-    required this.movies,
+    required this.movies, required this.moviesSlide,
   });
 
+  final List<Movie> moviesSlide;
   final List<Movie> movies;
 
   @override
@@ -63,9 +64,13 @@ class _ContainHome extends StatelessWidget {
     
         CustomAppBar(),
     
-        MoviesSlideshow(movies: movies)
+        MoviesSlideshow(movies: moviesSlide),
+
+        MovieHorizontalView(movies: movies, title: 'Cine', subtitle: 'Lunes 20',)
+
     
-    
+      
+
       ],
     );
   }
