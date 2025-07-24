@@ -13,8 +13,9 @@ final class GetNowMoviesLoading extends GetNowMoviesState {}
 final class GetNowMoviesSuccess extends GetNowMoviesState {
 
   final List<Movie> movies;
+  final List<Movie>? slideMoovie;
 
-  GetNowMoviesSuccess({required this.movies});
+  GetNowMoviesSuccess({required this.movies, this.slideMoovie});
 
 }
 final class GetNowMoviesFailure extends GetNowMoviesState {

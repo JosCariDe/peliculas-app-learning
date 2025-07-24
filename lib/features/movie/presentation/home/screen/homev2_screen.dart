@@ -40,7 +40,7 @@ class _HomeViewState extends State<_HomeView> {
       }
       
       if (state is GetNowMoviesSuccess){
-        return _ContainHome(movies: state.movies);
+        return _ContainHome(movies: state.slideMoovie ?? []);
       }
 
       return const Center(child: Text('Something went wrong'));

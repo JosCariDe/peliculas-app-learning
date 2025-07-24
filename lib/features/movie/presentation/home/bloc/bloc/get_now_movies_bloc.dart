@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_now_playing_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 
@@ -19,13 +18,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
     on<LoadNextPage>(_loadNextPage);
   }
 
-  List<Movie>? get currentMovies {
-    final currentState = state;
-    if (currentState is GetNowMoviesSuccess) {
-      return currentState.movies;
-    }
-    return null;
-  }
+
 
   FutureOr<void> _getNowMoviesEvent(
     GetNowMoviesEvent event,
@@ -47,7 +40,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
           ),
         ),
         (listMovies) {
-          emit(GetNowMoviesSuccess(movies: listMovies));
+          emit(GetNowMoviesSuccess(movies: listMovies, slideMoovie: listMovies.sublist(0,  5)));
           debugPrint(listMovies[0].id.toString());
         },
       );
@@ -82,4 +75,5 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
       );
     }
   }
+
 }
