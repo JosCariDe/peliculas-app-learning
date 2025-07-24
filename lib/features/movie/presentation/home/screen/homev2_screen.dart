@@ -37,7 +37,9 @@ class _HomeViewState extends State<_HomeView> {
 
         CustomAppBar(),
 
-        Expanded(
+        MoviesSlideshow(movies: movies)
+
+        /*Expanded(
           child: ListView.builder(
             itemCount: movies.length,
             itemBuilder: (context, index) {
@@ -48,7 +50,7 @@ class _HomeViewState extends State<_HomeView> {
               );
             },
           ),
-        ),
+        ),*/
       ],
     );
   }
