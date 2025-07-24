@@ -29,28 +29,43 @@ class _HomeViewState extends State<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Movie> movies =
-        context.watch<GetNowMoviesBloc>().currentMovies ?? [];
+    
+    return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(builder: (context, state) {
+      if (state is GetNowMoviesLoading || state is GetNowMoviesInitial){
+        return const Center(child: CircularProgressIndicator(),);
+      }
 
+      if (state is GetNowMoviesFailure){
+        return Center(child: Text(state.message),);
+      }
+      
+      if (state is GetNowMoviesSuccess){
+        return _ContainHome(movies: state.movies);
+      }
+
+      return const Center(child: Text('Something went wrong'));
+
+    },);
+  }
+}
+
+class _ContainHome extends StatelessWidget {
+  const _ContainHome({
+    required this.movies,
+  });
+
+  final List<Movie> movies;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
-
+    
         CustomAppBar(),
-
+    
         MoviesSlideshow(movies: movies)
-
-        /*Expanded(
-          child: ListView.builder(
-            itemCount: movies.length,
-            itemBuilder: (context, index) {
-              final movie = movies[index];
-              return ListTile(
-                title: Text(movie.title),
-                //subtitle: Text(movies[index].overview),
-              );
-            },
-          ),
-        ),*/
+    
+    
       ],
     );
   }
