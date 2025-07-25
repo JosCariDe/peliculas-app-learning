@@ -9,7 +9,10 @@ class Homev2Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: _HomeView(), bottomNavigationBar: CustomBottonNavigationbar(),);
+    return const Scaffold(
+      body: _HomeView(),
+      bottomNavigationBar: CustomBottonNavigationbar(),
+    );
   }
 }
 
@@ -29,51 +32,97 @@ class _HomeViewState extends State<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    
-    return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(builder: (context, state) {
-      if (state is GetNowMoviesLoading || state is GetNowMoviesInitial){
-        return const Center(child: CircularProgressIndicator(),);
-      }
+    return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
+      builder: (context, state) {
+        if (state is GetNowMoviesLoading || state is GetNowMoviesInitial) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-      if (state is GetNowMoviesFailure){
-        return Center(child: Text(state.message),);
-      }
-      
-      if (state is GetNowMoviesSuccess){
-        return _ContainHome(movies: state.movies, moviesSlide: state.slideMoovie ?? [],);
-      }
+        if (state is GetNowMoviesFailure) {
+          return Center(child: Text(state.message));
+        }
 
-      return const Center(child: Text('Something went wrong'));
+        if (state is GetNowMoviesSuccess) {
+          return _ContainHome(
+            movies: state.movies,
+            moviesSlide: state.slideMoovie ?? [],
+          );
+        }
 
-    },);
+        return const Center(child: Text('Something went wrong'));
+      },
+    );
   }
 }
 
 class _ContainHome extends StatelessWidget {
-  const _ContainHome({
-    required this.movies, required this.moviesSlide,
-  });
+  const _ContainHome({required this.movies, required this.moviesSlide});
 
   final List<Movie> moviesSlide;
   final List<Movie> movies;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-    
-        CustomAppBar(),
-    
-        MoviesSlideshow(movies: moviesSlide),
+    return CustomScrollView(
+      slivers: [
 
-        MovieHorizontalView(movies: movies, title: 'Cine', subtitle: 'Lunes 20', loadNextPage: () {
-          debugPrint('Llamado del padre, osea HomeScreen');
-          context.read<GetNowMoviesBloc>().add(LoadNextPage());
-        },)
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomAppBar(),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return Column(
+              children: [
 
-    
-      
+                MoviesSlideshow(movies: moviesSlide),
 
+                MovieHorizontalView(
+                  movies: movies,
+                  title: 'En Cines',
+                  subtitle: 'Lunes 20',
+                  loadNextPage: () {
+                    debugPrint('Llamado del padre, osea HomeScreen');
+                    context.read<GetNowMoviesBloc>().add(LoadNextPage());
+                  },
+                ),
+
+                MovieHorizontalView(
+                  movies: movies,
+                  title: 'Proximamente',
+                  subtitle: 'En este mes',
+                  loadNextPage: () {
+                    debugPrint('Llamado del padre, osea HomeScreen');
+                    context.read<GetNowMoviesBloc>().add(LoadNextPage());
+                  },
+                ),
+
+                MovieHorizontalView(
+                  movies: movies,
+                  title: 'Populares',
+                  //subtitle: 'Lunes 20',
+                  loadNextPage: () {
+                    debugPrint('Llamado del padre, osea HomeScreen');
+                    context.read<GetNowMoviesBloc>().add(LoadNextPage());
+                  },
+                ),
+
+                MovieHorizontalView(
+                  movies: movies,
+                  title: 'Mejores calificadas',
+                  subtitle: 'De todos los tiempos',
+                  loadNextPage: () {
+                    debugPrint('Llamado del padre, osea HomeScreen');
+                    context.read<GetNowMoviesBloc>().add(LoadNextPage());
+                  },
+                ),
+                SizedBox(height: 15),
+              ],
+            );
+          }, childCount: 1),
+        ),
       ],
     );
   }
