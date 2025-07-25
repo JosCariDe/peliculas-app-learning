@@ -1,0 +1,46 @@
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:peliculas_app/features/movie/domain/cases_uses/get_popular_use_case.dart';
+import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
+import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
+
+part 'get_popular_movies_event.dart';
+part 'get_popular_movies_state.dart';
+
+class GetPopularMoviesBloc
+    extends Bloc<GetPopularMoviesEvent, GetPopularMoviesState> {
+  final GetPopularUseCase getPopularUseCase;
+  final currentPage = 1;
+  bool _isLoadingNextPage = false;
+
+  GetPopularMoviesBloc({required this.getPopularUseCase})
+    : super(GetPopularMoviesInitial()) {
+    on<GetPopularMoviesEvent>(_getPopularMoviesEven);
+  }
+
+  Future<void> _getPopularMoviesEven(
+    GetPopularMoviesEvent event,
+    Emitter<GetPopularMoviesState> emit,
+  ) async {
+    final currentState = state;
+
+    if (currentState is GetNowMoviesSuccess) return;
+
+    if (currentState is GetNowMoviesInitial) {
+      emit(GetPopularMoviesLoading());
+
+      final resultUseCase = await getPopularUseCase();
+
+      return resultUseCase.fold(
+        (failure) => emit(
+          GetPopularMoviesFailure(
+            message: 'Error al usar el caso de uso de GetPopularMovies',
+          ),
+        ),
+        (listMovies) {
+          emit(GetPopularMoviesSuccess(movies: listMovies));
+        },
+      );
+    }
+  }
+}

@@ -5,7 +5,7 @@ import 'package:peliculas_app/features/movie/data/datasources/remote/movies_remo
 import 'package:peliculas_app/features/movie/data/repositories/movies_repository_impl.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_now_playing_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/repositories/movies_repository.dart';
-import 'package:peliculas_app/features/movie/presentation/home/bloc/bloc/get_now_movies_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 
 final sl = GetIt.instance;
 
