@@ -37,4 +37,11 @@ class MoviesRepositoryImpl implements MoviesRepository {
       return movieDataSource.getNowPlaying(page: page);
     });
   }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getPopular({int page = 1}) {
+    return _handleRequest(() async {
+      return movieDataSource.getPopular(page: page);
+    });
+  }
 }

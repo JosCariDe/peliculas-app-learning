@@ -46,4 +46,26 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
       throw LocalFailure();
     }
   }
+
+  @override
+  Future<List<Movie>> getPopular({int page = 1}) async {
+    try {
+      final response = await dio.get(
+        '/movie/popular',
+        queryParameters: {
+          'page': page,
+        },
+      );
+      final movieDBResponse = MovieDbResponse.fromJson(response.data);
+
+      final List<Movie> movies = movieDBResponse.results
+          .where((moviedb) => (moviedb.posterPath != 'no-poster'))
+          .map((movie) => MovieMapper.movieDBToEntity(movie))
+          .toList();
+
+      return movies;
+    } catch (e) {
+      throw LocalFailure();
+    }
+  }
 }
