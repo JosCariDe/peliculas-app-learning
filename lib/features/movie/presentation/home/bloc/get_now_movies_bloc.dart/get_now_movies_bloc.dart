@@ -70,7 +70,6 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
           ),
         ),
         (listMovies) async{
-          _isLoadingNextPage = false;
           final combinatedMovies = List<Movie>.from(currentState.movies)..addAll(listMovies);
           debugPrint(currenPage.toString());
           emit(GetNowMoviesSuccess(movies: combinatedMovies, slideMoovie: currentState.movies.sublist(0,  5)));

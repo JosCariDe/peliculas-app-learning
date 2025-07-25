@@ -104,9 +104,9 @@ class _ContainHome extends StatelessWidget {
                         subtitle: 'En este mes',
                         loadNextPage: () {
                           debugPrint('Llamado del padre, osea HomeScreen');
-                          /*context.read<GetPopularMoviesBloc>().add(
-                            LoadNextPage(),
-                          );*/
+                          context.read<GetPopularMoviesBloc>().add(
+                            LoadNextPagePopular(),
+                          );
                         },
                       );
                     }
