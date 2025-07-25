@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/widgets/widgets_barril.dart';
 
 class Homev2Screen extends StatelessWidget {
@@ -28,6 +29,7 @@ class _HomeViewState extends State<_HomeView> {
   void initState() {
     super.initState();
     context.read<GetNowMoviesBloc>().add(GetAllMovies());
+    context.read<GetPopularMoviesBloc>().add(GetAllMoviesPopular());
   }
 
   @override
@@ -65,18 +67,14 @@ class _ContainHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-
         const SliverAppBar(
           floating: true,
-          flexibleSpace: FlexibleSpaceBar(
-            title: CustomAppBar(),
-          ),
+          flexibleSpace: FlexibleSpaceBar(title: CustomAppBar()),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-
                 MoviesSlideshow(movies: moviesSlide),
 
                 MovieHorizontalView(
@@ -88,14 +86,31 @@ class _ContainHome extends StatelessWidget {
                     context.read<GetNowMoviesBloc>().add(LoadNextPage());
                   },
                 ),
-
-                MovieHorizontalView(
-                  movies: movies,
-                  title: 'Proximamente',
-                  subtitle: 'En este mes',
-                  loadNextPage: () {
-                    debugPrint('Llamado del padre, osea HomeScreen');
-                    context.read<GetNowMoviesBloc>().add(LoadNextPage());
+                BlocBuilder<GetPopularMoviesBloc, GetPopularMoviesState>(
+                  builder: (context, statePopular) {
+                    if (statePopular is GetPopularMoviesLoading || statePopular is GetPopularMoviesInitial  ){
+                      debugPrint('Atorado en Loading Populate');
+                      return CircularProgressIndicator();
+                    }
+                    if (statePopular is GetPopularMoviesFailure){
+                      debugPrint('Atorado en Failure Populate');
+                      return Center(child: Text(statePopular.message),);
+                    } 
+                    if (statePopular is GetPopularMoviesSuccess) {
+                      debugPrint('Atorado en Success Populate');
+                      return MovieHorizontalView(
+                        movies: statePopular.movies,
+                        title: 'Populares',
+                        subtitle: 'En este mes',
+                        loadNextPage: () {
+                          debugPrint('Llamado del padre, osea HomeScreen');
+                          /*context.read<GetPopularMoviesBloc>().add(
+                            LoadNextPage(),
+                          );*/
+                        },
+                      );
+                    }
+                    return Center(child: Text('Algo salio mal',));
                   },
                 ),
 

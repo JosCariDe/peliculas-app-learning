@@ -7,9 +7,5 @@ sealed class GetPopularMoviesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllMoviesPopular extends GetPopularMoviesBloc{
-  GetAllMoviesPopular({required super.getPopularUseCase});
-}
-class LoadNextPagePopular extends GetPopularMoviesBloc{
-  LoadNextPagePopular({required super.getPopularUseCase});
-}
+class GetAllMoviesPopular extends GetPopularMoviesEvent{}
+class LoadNextPagePopular extends GetPopularMoviesEvent{}
