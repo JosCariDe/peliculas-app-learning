@@ -12,6 +12,7 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
 
   final GetNowPlayingUseCase getNowPlayingUseCase;
   int currenPage = 1;
+  bool _isLoadingNextPage = false;
 
   GetNowMoviesBloc({required this.getNowPlayingUseCase}) : super(GetNowMoviesInitial()) {
     on<GetAllMovies>(_getNowMoviesEvent);
@@ -53,10 +54,12 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
   ) async {
     
     final currentState = state;
-    if (currentState is GetNowMoviesInitial) return _getNowMoviesEvent(event, emit);
-
+    //if (currentState is GetNowMoviesInitial) return _getNowMoviesEvent(event, emit);
+    //if (currentState is GetNowMoviesLoading) emit(GetNowMoviesLoading());
+    if (_isLoadingNextPage) return;
     if (currentState is GetNowMoviesSuccess) {
       //emit(GetNowMoviesLoading());
+      _isLoadingNextPage = true;
       currenPage++;
       final resultUseCase = await getNowPlayingUseCase(page: currenPage);
 
@@ -66,11 +69,13 @@ class GetNowMoviesBloc extends Bloc<GetNowMoviesEvent, GetNowMoviesState> {
             message: 'Error al Pasar a la pagina $currenPage de las movies desde el bloc',
           ),
         ),
-        (listMovies) {
-          debugPrint('Ultima pelicula, tiene el titulo: ${listMovies[listMovies.length - 1].title}');
+        (listMovies) async{
+          _isLoadingNextPage = false;
           final combinatedMovies = List<Movie>.from(currentState.movies)..addAll(listMovies);
-          emit(GetNowMoviesSuccess(movies: combinatedMovies));
           debugPrint(currenPage.toString());
+          emit(GetNowMoviesSuccess(movies: combinatedMovies, slideMoovie: currentState.movies.sublist(0,  5)));
+          _isLoadingNextPage = false;
+          //await Future.delayed(const Duration(milliseconds: 300));
         },
       );
     }

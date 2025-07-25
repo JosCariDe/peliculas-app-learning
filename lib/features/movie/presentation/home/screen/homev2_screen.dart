@@ -66,7 +66,10 @@ class _ContainHome extends StatelessWidget {
     
         MoviesSlideshow(movies: moviesSlide),
 
-        MovieHorizontalView(movies: movies, title: 'Cine', subtitle: 'Lunes 20',)
+        MovieHorizontalView(movies: movies, title: 'Cine', subtitle: 'Lunes 20', loadNextPage: () {
+          debugPrint('Llamado del padre, osea HomeScreen');
+          context.read<GetNowMoviesBloc>().add(LoadNextPage());
+        },)
 
     
       
