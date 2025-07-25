@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/full_screen_loader.dart';
 import 'package:peliculas_app/features/movie/presentation/home/widgets/widgets_barril.dart';
 
 class Homev2Screen extends StatelessWidget {
@@ -37,7 +38,7 @@ class _HomeViewState extends State<_HomeView> {
     return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
       builder: (context, state) {
         if (state is GetNowMoviesLoading || state is GetNowMoviesInitial) {
-          return const Center(child: CircularProgressIndicator());
+          return const FullScreenLoader() ;
         }
 
         if (state is GetNowMoviesFailure) {
@@ -65,6 +66,10 @@ class _ContainHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+    
+
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
