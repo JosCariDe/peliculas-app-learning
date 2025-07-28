@@ -68,4 +68,9 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
       throw LocalFailure();
     }
   }
+  
+  @override
+  Future<Movie> getMovieById(int id) {
+    throw UnimplementedError();
+  }
 }

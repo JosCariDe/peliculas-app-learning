@@ -44,4 +44,9 @@ class MoviesRepositoryImpl implements MoviesRepository {
       return movieDataSource.getPopular(page: page);
     });
   }
+  
+  @override
+  Future<Either<Failure, Movie>> getMovieById(int id) {
+    throw UnimplementedError();
+  }
 }
