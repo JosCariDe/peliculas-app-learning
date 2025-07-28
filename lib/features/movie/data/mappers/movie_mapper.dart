@@ -29,7 +29,7 @@ class MovieMapper {
     backdropPath: (moviedb.backdropPath != '')
         ? 'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}'
         : 'https://previews.123rf.com/images/macrovector/macrovector1806/macrovector180600296/102746545-glitch-style-poster-with-404-not-found-text-on-screen-with-destruction-pixels-structure-background.jpg',
-    genreIds: moviedb.genres.map((genero) => genero.id.toString()).toList(),
+    genreIds: moviedb.genres.map((genero) => genero.name.toString()).toList(),
     id: moviedb.id,
     originalLanguage: moviedb.originalLanguage,
     originalTitle: moviedb.originalTitle,

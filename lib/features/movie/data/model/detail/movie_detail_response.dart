@@ -1,12 +1,8 @@
 
-import 'dart:convert';
-
-
-
 class MovieDetailResponse {
     final bool adult;
     final String backdropPath;
-    final dynamic belongsToCollection;
+    final BelongsToCollection? belongsToCollection;
     final int budget;
     final List<Genre> genres;
     final String homepage;
@@ -63,7 +59,7 @@ class MovieDetailResponse {
     factory MovieDetailResponse.fromJson(Map<String, dynamic> json) => MovieDetailResponse(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
-        belongsToCollection: json["belongs_to_collection"],
+        belongsToCollection: json["belongs_to_collection"] == null ? null :  BelongsToCollection.fromJson(json["belongs_to_collection"]),
         budget: json["budget"],
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         homepage: json["homepage"],
@@ -92,7 +88,7 @@ class MovieDetailResponse {
     Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
-        "belongs_to_collection": belongsToCollection,
+        "belongs_to_collection": belongsToCollection?.toJson(),
         "budget": budget,
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
         "homepage": homepage,
@@ -119,6 +115,34 @@ class MovieDetailResponse {
     };
 }
 
+class BelongsToCollection {
+    final int id;
+    final String name;
+    final String posterPath;
+    final String backdropPath;
+
+    BelongsToCollection({
+        required this.id,
+        required this.name,
+        required this.posterPath,
+        required this.backdropPath,
+    });
+
+    factory BelongsToCollection.fromJson(Map<String, dynamic> json) => BelongsToCollection(
+        id: json["id"],
+        name: json["name"],
+        posterPath: json["poster_path"],
+        backdropPath: json["backdrop_path"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "poster_path": posterPath,
+        "backdrop_path": backdropPath,
+    };
+}
+
 class Genre {
     final int id;
     final String name;
@@ -141,7 +165,7 @@ class Genre {
 
 class ProductionCompany {
     final int id;
-    final String logoPath;
+    final String? logoPath;
     final String name;
     final String originCountry;
 

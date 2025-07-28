@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/rendering.dart';
 import 'package:peliculas_app/config/constants/environment.dart';
 import 'package:peliculas_app/core/errors/failure.dart';
 import 'package:peliculas_app/features/movie/data/datasources/remote/movies_datasource_remote.dart';
@@ -70,6 +71,10 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
     try {
       final response = await dio.get('movie/$id');
 
+      if (response.statusCode != 200) {
+        throw Exception('Movie With id: $id not found');
+      }
+
       final movieDetailDBResponse = MovieDetailResponse.fromJson(response.data);
 
       final Movie movie = MovieMapper.movieDetailDBToEntity(
@@ -77,6 +82,9 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
       );
       return movie;
     } catch (e) {
+      debugPrint(
+        'Error en el metodo del dataSource de buscar Movie By Id: $id, error : ${e.toString()}',
+      );
       throw RemoteFailure();
     }
   }
