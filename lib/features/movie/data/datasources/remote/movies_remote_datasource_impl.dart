@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:peliculas_app/config/constants/environment.dart';
 import 'package:peliculas_app/core/errors/failure.dart';
 import 'package:peliculas_app/features/movie/data/datasources/remote/movies_datasource_remote.dart';
 import 'package:peliculas_app/features/movie/data/mappers/movie_mapper.dart';
+import 'package:peliculas_app/features/movie/data/model/detail/movie_detail_response.dart';
 import 'package:peliculas_app/features/movie/data/model/movieDB/moviedb_response.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 
@@ -24,9 +24,7 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
       //debugPrint('Page DataSource: ${page.toString()}');
       final response = await dio.get(
         '/movie/now_playing',
-        queryParameters: {
-          'page': page,
-        },
+        queryParameters: {'page': page},
       );
       //debugPrint(response.toString());
       //debugPrint('\nEmpezando a Mapper\n');
@@ -52,9 +50,7 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
     try {
       final response = await dio.get(
         '/movie/popular',
-        queryParameters: {
-          'page': page,
-        },
+        queryParameters: {'page': page},
       );
       final movieDBResponse = MovieDbResponse.fromJson(response.data);
 
@@ -65,12 +61,23 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
 
       return movies;
     } catch (e) {
-      throw LocalFailure();
+      throw RemoteFailure();
     }
   }
-  
+
   @override
-  Future<Movie> getMovieById(int id) {
-    throw UnimplementedError();
+  Future<Movie> getMovieById(int id) async {
+    try {
+      final response = await dio.get('movie/$id');
+
+      final movieDetailDBResponse = MovieDetailResponse.fromJson(response.data);
+
+      final Movie movie = MovieMapper.movieDetailDBToEntity(
+        movieDetailDBResponse,
+      );
+      return movie;
+    } catch (e) {
+      throw RemoteFailure();
+    }
   }
 }
