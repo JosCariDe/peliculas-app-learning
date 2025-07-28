@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 
 class MoviesSlideshow extends StatelessWidget {
   final List<Movie> movies;
@@ -18,7 +20,7 @@ class MoviesSlideshow extends StatelessWidget {
       height: 250,
       width: double.infinity,
       child: Swiper(
-        viewportFraction: 0.8,
+        viewportFraction: ResponsiveBreakpoints.of(context).isMobile ? 0.8 : 0.3,
         scale: 0.9,
         autoplay: true,
         pagination: SwiperPagination(

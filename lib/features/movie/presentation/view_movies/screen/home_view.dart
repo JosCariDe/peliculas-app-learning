@@ -7,6 +7,8 @@ import 'package:peliculas_app/features/movie/presentation/home/screen/scroll_inf
 import 'package:peliculas_app/features/movie/presentation/home/widgets/movies_slideshow.dart';
 import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/custom_app_bar.dart';
 import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/full_screen_loader.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -25,6 +27,12 @@ class HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
+    /*
+    if (ResponsiveBreakpoints.of(context).largerThan(MOBILE)) {
+      return Center(child: Text('Responsive Desing'),);
+    } */
+
     return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
       builder: (context, state) {
         if (state is GetNowMoviesLoading || state is GetNowMoviesInitial) {
