@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:peliculas_app/di/injection.dart';
+import 'package:peliculas_app/features/movie/domain/cases_uses/get_movie_by_id_use_case.dart';
 import 'package:peliculas_app/features/movie/presentation/favorites/screen/favorite_screen.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/screen/homev2_screen.dart';
+import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/screen/movie_screen.dart';
 import 'package:peliculas_app/features/movie/presentation/view_movies/screen/home_view.dart';
 
@@ -73,7 +75,12 @@ final appRouter = GoRouter(
       path: '/movie/:id',
       builder: (context, state) {
         final movieID = state.pathParameters['id'] ?? 'no ID';
-        return MovieScreen(movieId: movieID);
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => sl<GetMovieByIdBloc>()),
+          ],
+          child: MovieScreen(movieId: movieID),
+        );
       },
     ),
   ],

@@ -21,7 +21,7 @@ class HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    context.read<GetNowMoviesBloc>().add(GetAllMovies());
+      context.read<GetNowMoviesBloc>().add(GetAllMovies());
     context.read<GetPopularMoviesBloc>().add(GetAllMoviesPopular());
   }
 
