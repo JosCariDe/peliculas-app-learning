@@ -9,7 +9,7 @@ class GetMovieByIdUseCase {
 
   GetMovieByIdUseCase({required this.repository});
 
-  Future<Either<Failure, Movie>> call(int id) {
+  Future<Either<Failure, Movie>> call(String id) {
     return repository.getMovieById(id);
   }
 

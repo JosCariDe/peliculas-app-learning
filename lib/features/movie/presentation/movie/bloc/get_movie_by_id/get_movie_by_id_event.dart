@@ -8,7 +8,7 @@ sealed class GetMovieByIdEvent extends Equatable {
 }
 
 class GetMovieUseCase extends GetMovieByIdEvent {
-  final int idMovie;
+  final String idMovie;
 
   const GetMovieUseCase({required this.idMovie});
 
@@ -16,3 +16,5 @@ class GetMovieUseCase extends GetMovieByIdEvent {
   @override
   List<Object> get props => [idMovie];
 }
+
+class ResetMovieByIdEvent extends GetMovieByIdEvent {}

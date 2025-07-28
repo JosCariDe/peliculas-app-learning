@@ -9,6 +9,7 @@ import 'package:peliculas_app/features/movie/domain/cases_uses/get_popular_use_c
 import 'package:peliculas_app/features/movie/domain/repositories/movies_repository.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -49,5 +50,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<GetPopularMoviesBloc>(
     () => GetPopularMoviesBloc(getPopularUseCase: sl()),
+  );
+
+  sl.registerLazySingleton<GetMovieByIdBloc>(
+    () => GetMovieByIdBloc(getMovieUseCase: sl()),
   );
 }

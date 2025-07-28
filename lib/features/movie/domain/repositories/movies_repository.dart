@@ -6,6 +6,6 @@ abstract class MoviesRepository {
 
   Future<Either<Failure, List<Movie>>> getNowPlaying({ int page = 1 });
   Future<Either<Failure, List<Movie>>> getPopular({ int page = 1 });
-  Future<Either<Failure, Movie>> getMovieById(int id);
+  Future<Either<Failure, Movie>> getMovieById(String id);
 
 }

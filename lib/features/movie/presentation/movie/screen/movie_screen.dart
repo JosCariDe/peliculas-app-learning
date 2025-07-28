@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 
 class MovieScreen extends StatefulWidget {
 
@@ -12,11 +14,12 @@ class MovieScreen extends StatefulWidget {
 }
 
 class _MovieScreenState extends State<MovieScreen> {
-
-   @override
+  
+  @override
   void initState() {
     super.initState();
-    
+    context.read<GetMovieByIdBloc>().add(ResetMovieByIdEvent());
+    context.read<GetMovieByIdBloc>().add(GetMovieUseCase(idMovie: widget.movieId));
   }
 
   @override

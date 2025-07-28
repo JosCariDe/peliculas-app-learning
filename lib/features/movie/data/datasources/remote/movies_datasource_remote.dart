@@ -5,6 +5,6 @@ abstract class MoviesDatasourceRemote {
 
   Future<List<Movie>> getNowPlaying({int page = 1});
   Future<List<Movie>> getPopular({int page = 1});
-  Future<Movie> getMovieById(int id);
+  Future<Movie> getMovieById(String id);
 
 }

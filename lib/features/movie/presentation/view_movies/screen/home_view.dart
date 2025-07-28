@@ -9,7 +9,6 @@ import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/cu
 import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/full_screen_loader.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -21,13 +20,12 @@ class HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-      context.read<GetNowMoviesBloc>().add(GetAllMovies());
+    context.read<GetNowMoviesBloc>().add(GetAllMovies());
     context.read<GetPopularMoviesBloc>().add(GetAllMoviesPopular());
   }
 
   @override
   Widget build(BuildContext context) {
-
     /*
     if (ResponsiveBreakpoints.of(context).largerThan(MOBILE)) {
       return Center(child: Text('Responsive Desing'),);
@@ -36,7 +34,7 @@ class HomeViewState extends State<HomeView> {
     return BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
       builder: (context, state) {
         if (state is GetNowMoviesLoading || state is GetNowMoviesInitial) {
-          return const FullScreenLoader() ;
+          return const FullScreenLoader();
         }
 
         if (state is GetNowMoviesFailure) {
@@ -64,10 +62,6 @@ class _ContainHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    
-
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
@@ -91,14 +85,15 @@ class _ContainHome extends StatelessWidget {
                 ),
                 BlocBuilder<GetPopularMoviesBloc, GetPopularMoviesState>(
                   builder: (context, statePopular) {
-                    if (statePopular is GetPopularMoviesLoading || statePopular is GetPopularMoviesInitial  ){
+                    if (statePopular is GetPopularMoviesLoading ||
+                        statePopular is GetPopularMoviesInitial) {
                       debugPrint('Atorado en Loading Populate');
                       return CircularProgressIndicator();
                     }
-                    if (statePopular is GetPopularMoviesFailure){
+                    if (statePopular is GetPopularMoviesFailure) {
                       debugPrint('Atorado en Failure Populate');
-                      return Center(child: Text(statePopular.message),);
-                    } 
+                      return Center(child: Text(statePopular.message));
+                    }
                     if (statePopular is GetPopularMoviesSuccess) {
                       debugPrint('Atorado en Success Populate');
                       return MovieHorizontalView(
@@ -113,7 +108,7 @@ class _ContainHome extends StatelessWidget {
                         },
                       );
                     }
-                    return Center(child: Text('Algo salio mal',));
+                    return Center(child: Text('Algo salio mal'));
                   },
                 ),
 

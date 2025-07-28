@@ -46,7 +46,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
   }
   
   @override
-  Future<Either<Failure, Movie>> getMovieById(int id) {
+  Future<Either<Failure, Movie>> getMovieById(String id) {
     return _handleRequest(() async {
       return movieDataSource.getMovieById(id);
     });

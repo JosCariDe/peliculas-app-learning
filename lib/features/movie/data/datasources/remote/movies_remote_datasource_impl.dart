@@ -67,9 +67,9 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
   }
 
   @override
-  Future<Movie> getMovieById(int id) async {
+  Future<Movie> getMovieById(String id) async {
     try {
-      final response = await dio.get('movie/$id');
+      final response = await dio.get('/movie/$id');
 
       if (response.statusCode != 200) {
         throw Exception('Movie With id: $id not found');
