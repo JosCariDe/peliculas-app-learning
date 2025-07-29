@@ -42,10 +42,7 @@ final appRouter = GoRouter(
                   path: 'movie/:id',
                   builder: (context, state) {
                     final movieID = state.pathParameters['id'] ?? 'no ID';
-                    return BlocProvider(
-                      create: (_) => sl<GetMovieByIdBloc>(),
-                      child: MovieScreen(movieId: movieID),
-                    );
+                    return MovieScreen(movieId: movieID);
                   },
                 ),
               ],
