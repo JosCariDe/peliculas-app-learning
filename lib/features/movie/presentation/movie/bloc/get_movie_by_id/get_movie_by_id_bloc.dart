@@ -22,16 +22,19 @@ class GetMovieByIdBloc extends Bloc<GetMovieByIdEvent, GetMovieByIdState> {
     GetMovieUseCase event,
     Emitter<GetMovieByIdState> emit,
   ) async {
-    debugPrint('Llamada al evento ByID');
+    final currentState =state;
+    if (currentState is GetMovieByIdSucces){
+      return;
+    }
+
+    debugPrint('Llamada al evento ByID: ${event.idMovie}');
 
     // Remover esta condición que bloquea la recarga
     // if (currenState is GetMovieByIdSucces) return;
 
-    emit(GetMovieByIdLoading());
-    debugPrint('Llamada al evento ByID 222');
 
     final responseCaseUse = await getMovieUseCase(event.idMovie);
-
+    
     responseCaseUse.fold(
       (failure) => emit(
         GetMovieByIdFailure(

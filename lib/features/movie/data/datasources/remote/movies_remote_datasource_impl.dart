@@ -75,6 +75,8 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
         throw Exception('Movie With id: $id not found');
       }
 
+      debugPrint('Llamado a la api desde el dataSource con la movie con id de $id');
+
       final movieDetailDBResponse = MovieDetailResponse.fromJson(response.data);
 
       final Movie movie = MovieMapper.movieDetailDBToEntity(
