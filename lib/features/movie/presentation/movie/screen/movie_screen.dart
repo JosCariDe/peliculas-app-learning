@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peliculas_app/di/injection.dart';
+import 'package:peliculas_app/features/credit/domain/entities/actor.dart';
+import 'package:peliculas_app/features/credit/presentation/actor/bloc/get_actors_bloc/get_actors_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 
@@ -10,39 +11,34 @@ class MovieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          GetMovieByIdBloc(getMovieUseCase: sl())
-            ..add(GetMovieUseCase(idMovie: movieId)),
-      child: Scaffold(
-        body: BlocBuilder<GetMovieByIdBloc, GetMovieByIdState>(
-          builder: (context, state) {
-            if (state is GetMovieByIdLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      body: BlocBuilder<GetMovieByIdBloc, GetMovieByIdState>(
+        builder: (context, state) {
+          if (state is GetMovieByIdLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (state is GetMovieByIdFailure) {
-              return Center(child: Text('Error: ${state.message}'));
-            }
+          if (state is GetMovieByIdFailure) {
+            return Center(child: Text('Error: ${state.message}'));
+          }
 
-            if (state is GetMovieByIdSucces) {
-              return CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  _CustomSliverAppBar(movie: state.movie),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => _MovieDetails(movie: state.movie),
-                      childCount: 1,
-                    ),
+          if (state is GetMovieByIdSucces) {
+            return CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              slivers: [
+                _CustomSliverAppBar(movie: state.movie),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => _MovieDetails(movie: state.movie),
+                    childCount: 1,
                   ),
-                ],
-              );
-            }
+                ),
+              ],
+            );
+          }
 
-            return const Center(child: Text('Estado inicial'));
-          },
-        ),
+          return const Center(child: Text('Estado inicial'));
+        },
       ),
     );
   }
@@ -129,7 +125,7 @@ class _MovieDetails extends StatelessWidget {
                   width: size.width * 0.25,
                 ),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               // Envuelve el texto largo en Expanded para evitar overflow horizontal
               Expanded(
                 flex: 3, // Dale más espacio al overview
@@ -154,15 +150,13 @@ class _MovieDetails extends StatelessWidget {
                       child: Wrap(
                         children: [
                           ...movie.genreIds.map((gender) => TextButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                            ),
-                            child: Text(gender),
-                          ))
+                                onPressed: () {},
+                                style: const ButtonStyle(),
+                                child: Text(gender),
+                              ))
                         ],
                       ),
                     ),
-                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -182,8 +176,71 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
 
-        //? Generos de la pelicula:
+        //? Actores
+        _ActorsByMovie(),
+
+        const SizedBox(height: 50),
       ],
+    );
+  }
+}
+
+class _ActorsByMovie extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GetActorsBloc, GetActorsState>(
+      builder: (context, state) {
+        if (state is GetActorsSuccess) {
+          return _buildActorsListView(state.actors);
+        }
+        if (state is GetActorsLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is GetActorsFailure) {
+          return Center(child: Text(state.message));
+        }
+        return const SizedBox.shrink(); // No muestra nada en estado inicial
+      },
+    );
+  }
+
+  Widget _buildActorsListView(List<Actor> actors) {
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actors.length,
+        itemBuilder: (context, index) {
+          final actor = actors[index];
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            width: 150,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    actor.profilePath,
+                    height: 180,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(actor.name, maxLines: 2),
+                Text(
+                  actor.character ?? '',
+                  maxLines: 2,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

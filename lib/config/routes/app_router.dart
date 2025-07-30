@@ -6,6 +6,7 @@ import 'package:peliculas_app/features/movie/presentation/favorites/screen/favor
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/screen/homev2_screen.dart';
+import 'package:peliculas_app/features/credit/presentation/actor/bloc/get_actors_bloc/get_actors_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/screen/movie_screen.dart';
 import 'package:peliculas_app/features/movie/presentation/view_movies/screen/home_view.dart';
@@ -41,8 +42,21 @@ final appRouter = GoRouter(
                 GoRoute(
                   path: 'movie/:id',
                   builder: (context, state) {
-                    final movieID = state.pathParameters['id'] ?? 'no ID';
-                    return MovieScreen(movieId: movieID);
+                    final movieID = state.pathParameters['id'] ?? 'no-id';
+                    return MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (_) => sl<GetMovieByIdBloc>()
+                            ..add(GetMovieUseCase(idMovie: movieID)),
+                        ),
+                        BlocProvider(
+                          create: (_) => sl<GetActorsBloc>()
+                            ..add(GetActorsUseCaseEvent(
+                                idMovie: int.tryParse(movieID) ?? 0)),
+                        ),
+                      ],
+                      child: MovieScreen(movieId: movieID),
+                    );
                   },
                 ),
               ],
