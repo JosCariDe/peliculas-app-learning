@@ -1,4 +1,3 @@
-
 import 'package:get_it/get_it.dart';
 import 'package:peliculas_app/features/credit/data/data_sources/remote/cast_dio_data_source_impl.dart';
 import 'package:peliculas_app/features/credit/data/data_sources/remote/cast_remote_data_source.dart';
@@ -12,27 +11,26 @@ import 'package:peliculas_app/features/movie/data/repositories/movies_repository
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_movie_by_id_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_now_playing_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/cases_uses/get_popular_use_case.dart';
+import 'package:peliculas_app/features/movie/domain/cases_uses/search_movie_use_case.dart';
 import 'package:peliculas_app/features/movie/domain/repositories/movies_repository.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_popular_movies/get_popular_movies_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/search/blocs/search_movie_bloc/search_movie_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
-
-  //? DataSources 
-    //? MOVIES
+  //? DataSources
+  //? MOVIES
   sl.registerLazySingleton<MoviesDatasourceRemote>(
     () => MoviesRemoteDatasourceImpl(),
   );
 
-  sl.registerLazySingleton<CastRemoteDataSource>(
-    () => CastDioDataSourceImpl(),
-    );
+  sl.registerLazySingleton<CastRemoteDataSource>(() => CastDioDataSourceImpl());
 
   //? Repositories
-    //? MOVIES
+  //? MOVIES
   sl.registerLazySingleton<MoviesRepository>(
     () => MoviesRepositoryImpl(movieDataSource: sl()),
   );
@@ -41,9 +39,8 @@ Future<void> init() async {
     () => CastRespositoryImpl(castRemoteDataSource: sl()),
   );
 
-  
   //? CASOS DE USO
-     //? MOVIES
+  //? MOVIES
   sl.registerLazySingleton<GetNowPlayingUseCase>(
     () => GetNowPlayingUseCase(movieRepository: sl()),
   );
@@ -55,14 +52,16 @@ Future<void> init() async {
   sl.registerLazySingleton<GetMovieByIdUseCase>(
     () => GetMovieByIdUseCase(repository: sl()),
   );
-  
+
   sl.registerLazySingleton<GetActorsCaseUse>(
     () => GetActorsCaseUse(castRepository: sl()),
   );
-
+  sl.registerLazySingleton<SearchMovieUseCase>(
+    () => SearchMovieUseCase(movieRepository: sl()),
+  );
 
   //? BLoC
-    //? MOVIES
+  //? MOVIES
   sl.registerLazySingleton<GetNowMoviesBloc>(
     () => GetNowMoviesBloc(getNowPlayingUseCase: sl()),
   );
@@ -81,4 +80,6 @@ Future<void> init() async {
   sl.registerFactory<GetActorsBloc>(
     () => GetActorsBloc(getActorsUseCase: sl()),
   );
+
+  sl.registerFactory<SearchMovieBloc>(() => SearchMovieBloc(sl()));
 }

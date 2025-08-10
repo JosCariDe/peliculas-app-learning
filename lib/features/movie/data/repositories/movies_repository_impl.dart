@@ -51,4 +51,11 @@ class MoviesRepositoryImpl implements MoviesRepository {
       return movieDataSource.getMovieById(id);
     });
   }
+  
+  @override
+  Future<Either<Failure, List<Movie>>> searchMovie(String query) {
+    return _handleRequest(() async {
+      return movieDataSource.searchMovie(query);
+    },);
+  }
 }

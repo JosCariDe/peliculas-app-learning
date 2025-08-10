@@ -75,7 +75,9 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
         throw Exception('Movie With id: $id not found');
       }
 
-      debugPrint('Llamado a la api desde el dataSource con la movie con id de $id');
+      debugPrint(
+        'Llamado a la api desde el dataSource con la movie con id de $id',
+      );
 
       final movieDetailDBResponse = MovieDetailResponse.fromJson(response.data);
 
@@ -86,6 +88,30 @@ class MoviesRemoteDatasourceImpl implements MoviesDatasourceRemote {
     } catch (e) {
       debugPrint(
         'Error en el metodo del dataSource de buscar Movie By Id: $id, error : ${e.toString()}',
+      );
+      throw RemoteFailure();
+    }
+  }
+
+  @override
+  Future<List<Movie>> searchMovie(String query) async {
+    try {
+      final response = await dio.get(
+        '/search/movie',
+        queryParameters: {'query': query},
+      );
+
+      debugPrint('Llamado a la api desde el dataSource con query de busqueda');
+
+      final movieDetailDBResponse = MovieDbResponse.fromJson(response.data);
+
+      final List<Movie> movies = movieDetailDBResponse.results
+          .map((movie) => MovieMapper.movieDBToEntity(movie))
+          .toList();
+      return movies;
+    } catch (e) {
+      debugPrint(
+        'Error en el metodo del dataSource de buscar Mobie  error : ${e.toString()}',
       );
       throw RemoteFailure();
     }

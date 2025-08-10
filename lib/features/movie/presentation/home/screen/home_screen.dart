@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peliculas_app/features/movie/domain/entities/movie.dart';
 import 'package:peliculas_app/features/movie/presentation/home/bloc/get_now_movies_bloc.dart/get_now_movies_bloc.dart';
+import 'package:peliculas_app/features/movie/presentation/home/widgets/shared/custom_app_bar.dart'; // Import CustomAppBar
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Peliculas Descatacas'))),
+      appBar: const CustomAppBar(), // Use CustomAppBar
       body: Center(
         child: BlocBuilder<GetNowMoviesBloc, GetNowMoviesState>(
           builder: (context, state) {
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
 
               return Padding(
-                padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12), // Corrected EdgeInsetsGeometry
                 child: _buildMovies(movies),
               );
             }

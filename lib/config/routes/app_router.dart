@@ -9,6 +9,7 @@ import 'package:peliculas_app/features/movie/presentation/home/screen/homev2_scr
 import 'package:peliculas_app/features/credit/presentation/actor/bloc/get_actors_bloc/get_actors_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/bloc/get_movie_by_id/get_movie_by_id_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/movie/screen/movie_screen.dart';
+import 'package:peliculas_app/features/movie/presentation/search/blocs/search_movie_bloc/search_movie_bloc.dart';
 import 'package:peliculas_app/features/movie/presentation/view_movies/screen/home_view.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -35,6 +36,7 @@ final appRouter = GoRouter(
                 providers: [
                   BlocProvider(create: (_) => sl<GetNowMoviesBloc>()),
                   BlocProvider(create: (_) => sl<GetPopularMoviesBloc>()),
+                  BlocProvider(create: (_) => sl<SearchMovieBloc>(),  )
                 ],
                 child: const HomeView(),
               ),
